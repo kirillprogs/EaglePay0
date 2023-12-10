@@ -5,8 +5,16 @@
 #include "src/repository.h"
 #include "src/Entities.h"
 #include "src/Utils.h"
-#include <postgresql/libpq-fe.h>
 #include <cstring>
+
+#ifdef _WIN32
+/* Include PostgreSQLode for WINDOWS */
+#include <libpq-fe.h>
+#pragma warning(disable : 4996)
+#else
+/* Same code for linux */
+#include <postgresql/libpq-fe.h>
+#endif
 
 using std::vector;
 using std::string;
@@ -74,6 +82,7 @@ int main()
 		}
 		PQclear(result);
 	}
+
 	PQfinish(connection);
 	return 0;
 }
