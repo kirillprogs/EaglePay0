@@ -10,7 +10,7 @@ CREATE TABLE account
     ipn        INTEGER     PRIMARY KEY,
     pib        VARCHAR(50) NOT NULL,
     birth_date DATE        NOT NULL,
-    init_date  DATE        DEFAULT CURRENT_DATE,
+    init_date  DATE        NOT NULL DEFAULT CURRENT_DATE,
     email      VARCHAR(50) NOT NULL
 );
 
@@ -69,3 +69,5 @@ CREATE TABLE deposit
     FOREIGN KEY (payout_card)
         references card (card_number)
 );
+
+/* Populate tables with initial data */
