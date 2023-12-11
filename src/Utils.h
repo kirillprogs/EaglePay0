@@ -35,16 +35,16 @@ public:
 
 class Interval {
 public:
-	enum Type {DAYS, WEEKS, MONTHS};
+	enum IntervalType {DAYS, WEEKS, MONTHS};
 private:
 	unsigned int _number;
-	Type _time;
+	IntervalType _time;
 public:
 	Interval(std::string interval);
-	Interval(unsigned int number, Type time) : _number(number), _time(time) {};
+	Interval(unsigned int number, IntervalType time) : _number(number), _time(time) {};
 	~Interval() {};
 	inline unsigned int number() const { return _number; }
-	inline const Type& type() const { return _time; }
+	inline const IntervalType& type() const { return _time; }
 };
 
 ostream& operator<<(ostream& os, const Date&);

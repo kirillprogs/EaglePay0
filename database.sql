@@ -1,9 +1,19 @@
-DROP TABLE person;
+DROP TABLE regularPayment;
 DROP TABLE deposit;
 DROP TABLE transfer;
 DROP TABLE transferDaemon;
 DROP TABLE card;
 DROP TABLE account;
+DROP TABLE person;
+
+CREATE TABLE person
+(
+    ipn        INTEGER     PRIMARY KEY,
+    passport   CHAR(8)     UNIQUE,
+    pib        VARCHAR(50) NOT NULL,
+    birth_date DATE        NOT NULL,
+    email      VARCHAR(50) NOT NULL
+);
 
 CREATE TABLE account
 (
@@ -57,7 +67,7 @@ CREATE TABLE transfer
 
 CREATE TABLE deposit
 (
-    dep_id SERIAL  PRIMARY KEY,
+    dep_id         SERIAL  PRIMARY KEY,
     ipn            INTEGER      NOT NULL,
     payout_card    CHAR(16)     NOT NULL,
     amount         NUMERIC(8,2) NOT NULL,
@@ -68,6 +78,21 @@ CREATE TABLE deposit
         REFERENCES account (ipn),
     FOREIGN KEY (payout_card)
         references card (card_number)
+);
+
+CREATE TABLE regularPayment
+(
+    id         SERIAL       PRIMARY KEY,
+    from_acc   INTEGER      NOT NULL,
+    to_acc     INTEGER      NOT NULL,
+    amount     NUMERIC(8,2) NOT NULL,
+    setup_date DATE         NOT NULL     DEFAULT CURRENT_DATE,
+    diff_days  INTEGER      NOT NULL,
+    end_date   DATE         NOT NULL     DEFAULT CURRENT_DATE,
+    FOREIGN KEY (from_acc)
+        REFERENCES account (ipn),
+    FOREIGN KEY (to_acc)
+        REFERENCES account (ipn)
 );
 
 /* Populate tables with initial data */

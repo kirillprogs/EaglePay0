@@ -1,7 +1,14 @@
 #pragma once
 #include <string>
-#include "Entities.h"
-#include <postgresql/libpq-fe.h>
+#include "PostgreSQL.h"
+#include "entity/Card.h"
+#include "entity/Account.h"
+
+enum class ErrorType
+{
+	CARD_IS_NOT_FOUND,
+	CARD_IS_EXPIRED
+};
 
 class Bank
 {
@@ -19,14 +26,7 @@ public:
 	ErrorType* createTransferDaemon(const char* card_number_from, const char* card_number_to, double amount, Interval frequency, Date init_date) const;
 	ErrorType* makeDeposit(unsigned long long _ipn, const char* payout_card_number, double amount, double rate, double years, Date end_date) const;
 
-
 private:
 	std::string _name;
 	PGconn* _connection;
-};
-
-enum class ErrorType
-{
-	CARD_IS_NOT_FOUND,
-	CARD_IS_EXPIRED
 };

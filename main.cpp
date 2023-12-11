@@ -3,23 +3,13 @@
 #include <vector>
 
 #include "src/repository.h"
-#include "src/Entities.h"
 #include "src/Utils.h"
 #include <cstring>
-
-#ifdef _WIN32
-/* Include PostgreSQLode for WINDOWS */
-#include <libpq-fe.h>
-#pragma warning(disable : 4996)
-#else
-/* Same code for linux */
-#include <postgresql/libpq-fe.h>
-#endif
 
 using std::vector;
 using std::string;
 
-const char *connection_template_info = "host=localhost port=5432 dbname=eagle_pay user=%.20s password=%.20s";
+#include "src/PostgreSQL.h"
 
 vector<std::string> separateSQLRequests(const char* filename) {
 	FILE* file = fopen(filename, "r");
@@ -69,7 +59,7 @@ int main()
 		fprintf(stderr, "Connection to database failed %s\n", PQerrorMessage(connection));
 		exit(1);
 	}
-	vector<string> requests(separateSQLRequests("../database.sql"));
+	vector<string> requests(separateSQLRequests(db_file));
 	for (const auto & request : requests) {
 		PGresult *result = PQexec(connection, request.c_str());
 		if (!result)
